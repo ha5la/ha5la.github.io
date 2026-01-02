@@ -17,11 +17,17 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v7
 
-      - name: Generate map
+      - name: Generate map.html
         run: |
           ./generate_map.py
           mkdir output
           mv map.html output/
+
+      - name: Generate map.png
+        run: |
+          ./generate_map_png.py
+          mkdir -p output
+          mv map.png output/
 
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
