@@ -29,11 +29,15 @@ jobs:
           mkdir output
           mv map.html output/
 
+      - name: Install png postprocess tooling
+        run: |
+          sudo apt-get install -y --no-install-recommends pngcrush pngquant
+
       - name: Generate map.png
         run: |
           ./generate_map_png.py
           mkdir -p output
-          mv map.png output/
+          ./postprocess-png.sh map.png output/map.png
 
       - name: 'Upload Artifacts'
         uses: actions/upload-artifact@v4
