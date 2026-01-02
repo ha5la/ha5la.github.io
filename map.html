@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_0 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_0" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_0 = L.map(
+                "map_0",
+                {
+                    center: [47.416750666666665, 18.870272666666665],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 8,
+  "zoomControl": true,
+  "preferCanvas": true,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_0);
+
+            
+
+        
+    
+            var tile_layer_7 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_7.addTo(map_0);
+        
+    
+            var marker_8 = L.marker(
+                [47.58917, 18.85083],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_13 = $(`<div id="html_13" style="width: 100.0%; height: 100.0%;">HA/KM-016 Kutya-hegy (2024-12-18)</div>`)[0];
+                popup_9.setContent(html_13);
+            
+        
+
+        marker_8.bindPopup(popup_9)
+        ;
+
+        
+    
+    
+            var marker_14 = L.marker(
+                [47.64444, 19.33028],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_15 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_19 = $(`<div id="html_19" style="width: 100.0%; height: 100.0%;">HA/KM-028 Margita (2025-01-25)</div>`)[0];
+                popup_15.setContent(html_19);
+            
+        
+
+        marker_14.bindPopup(popup_15)
+        ;
+
+        
+    
+    
+            var marker_20 = L.marker(
+                [47.8719, 20.0128],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_21 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_25 = $(`<div id="html_25" style="width: 100.0%; height: 100.0%;">HA/EM-001 Kékes (2025-03-16)</div>`)[0];
+                popup_21.setContent(html_25);
+            
+        
+
+        marker_20.bindPopup(popup_21)
+        ;
+
+        
+    
+    
+            var marker_26 = L.marker(
+                [47.9161, 19.9164],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_27 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_31 = $(`<div id="html_31" style="width: 100.0%; height: 100.0%;">HA/EM-002 Galya-tetö (2025-03-16)</div>`)[0];
+                popup_27.setContent(html_31);
+            
+        
+
+        marker_26.bindPopup(popup_27)
+        ;
+
+        
+    
+    
+            var marker_32 = L.marker(
+                [47.71972, 18.89889],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_33 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_37 = $(`<div id="html_37" style="width: 100.0%; height: 100.0%;">HA/KM-005 Dobogó-kö (2025-03-18)</div>`)[0];
+                popup_33.setContent(html_37);
+            
+        
+
+        marker_32.bindPopup(popup_33)
+        ;
+
+        
+    
+    
+            var marker_38 = L.marker(
+                [47.68861, 18.87278],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_39 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_43 = $(`<div id="html_43" style="width: 100.0%; height: 100.0%;">HA/KM-002 Pilis (2025-04-05)</div>`)[0];
+                popup_39.setContent(html_43);
+            
+        
+
+        marker_38.bindPopup(popup_39)
+        ;
+
+        
+    
+    
+            var marker_44 = L.marker(
+                [47.94861, 18.94806],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_45 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_49 = $(`<div id="html_49" style="width: 100.0%; height: 100.0%;">HA/KM-001 Csóványos (2025-04-19)</div>`)[0];
+                popup_45.setContent(html_49);
+            
+        
+
+        marker_44.bindPopup(popup_45)
+        ;
+
+        
+    
+    
+            var marker_50 = L.marker(
+                [46.77194, 17.88111],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_51 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_55 = $(`<div id="html_55" style="width: 100.0%; height: 100.0%;">HA/DD-011 Alman-teto (2025-04-21)</div>`)[0];
+                popup_51.setContent(html_55);
+            
+        
+
+        marker_50.bindPopup(popup_51)
+        ;
+
+        
+    
+    
+            var marker_56 = L.marker(
+                [46.7958, 17.4397],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_57 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_61 = $(`<div id="html_61" style="width: 100.0%; height: 100.0%;">HA/KD-042 Hálás-tetö (2025-04-21)</div>`)[0];
+                popup_57.setContent(html_61);
+            
+        
+
+        marker_56.bindPopup(popup_57)
+        ;
+
+        
+    
+    
+            var marker_62 = L.marker(
+                [46.81861, 17.32917],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_63 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_67 = $(`<div id="html_67" style="width: 100.0%; height: 100.0%;">HA/ND-003 Köves-tetö (2025-04-21)</div>`)[0];
+                popup_63.setContent(html_67);
+            
+        
+
+        marker_62.bindPopup(popup_63)
+        ;
+
+        
+    
+    
+            var marker_68 = L.marker(
+                [46.17972, 18.37722],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_69 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_73 = $(`<div id="html_73" style="width: 100.0%; height: 100.0%;">HA/DD-001 Zengö (2025-08-23)</div>`)[0];
+                popup_69.setContent(html_73);
+            
+        
+
+        marker_68.bindPopup(popup_69)
+        ;
+
+        
+    
+    
+            var marker_74 = L.marker(
+                [46.22583, 18.36083],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_75 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_79 = $(`<div id="html_79" style="width: 100.0%; height: 100.0%;">HA/DD-004 Dobogó (2025-08-23)</div>`)[0];
+                popup_75.setContent(html_79);
+            
+        
+
+        marker_74.bindPopup(popup_75)
+        ;
+
+        
+    
+    
+            var marker_80 = L.marker(
+                [48.1028, 19.8369],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_81 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_85 = $(`<div id="html_85" style="width: 100.0%; height: 100.0%;">HA/EM-034 Pécs-kö (2025-09-24)</div>`)[0];
+                popup_81.setContent(html_85);
+            
+        
+
+        marker_80.bindPopup(popup_81)
+        ;
+
+        
+    
+    
+            var marker_86 = L.marker(
+                [48.1444, 19.8469],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_87 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_91 = $(`<div id="html_91" style="width: 100.0%; height: 100.0%;">HA/EM-023 Salgó (2025-10-01)</div>`)[0];
+                popup_87.setContent(html_91);
+            
+        
+
+        marker_86.bindPopup(popup_87)
+        ;
+
+        
+    
+    
+            var marker_92 = L.marker(
+                [47.83361, 19.15222],
+                {
+}
+            ).addTo(map_0);
+        
+    
+        var popup_93 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_97 = $(`<div id="html_97" style="width: 100.0%; height: 100.0%;">HA/KM-006 Naszály (2025-12-28)</div>`)[0];
+                popup_93.setContent(html_97);
+            
+        
+
+        marker_92.bindPopup(popup_93)
+        ;
+
+        
+    
+</script>
+</html>
