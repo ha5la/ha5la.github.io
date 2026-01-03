@@ -28,7 +28,7 @@ MARKER_RADIUS = 4
 # ------------------------------------------------------------
 def get_callsign():
     callsign = os.getenv("CALLSIGN")
-    return callsign if callsign is not None else os.environ["GITHUB_REPOSITORY_OWNER"]
+    return callsign if callsign else os.environ["GITHUB_REPOSITORY_OWNER"]
 
 url = f'https://sotl.as/api/activations/{get_callsign().upper()}'
 data = requests.get(url, timeout=30).json()

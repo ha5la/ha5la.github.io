@@ -16,7 +16,7 @@ OUT_HTML = "map.html"
 
 def get_callsign():
     callsign = os.getenv("CALLSIGN")
-    return callsign if callsign is not None else os.environ["GITHUB_REPOSITORY_OWNER"]
+    return callsign if callsign else os.environ["GITHUB_REPOSITORY_OWNER"]
 
 # Fetch activation data
 url = f'https://sotl.as/api/activations/{get_callsign().upper()}'
