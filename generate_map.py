@@ -14,8 +14,12 @@ from branca.element import Element
 
 OUT_HTML = "map.html"
 
+def get_callsign():
+    callsign = os.getenv("CALLSIGN")
+    return callsign if callsign is not None else os.environ["GITHUB_REPOSITORY_OWNER"]
+
 # Fetch activation data
-url = f'https://sotl.as/api/activations/{os.environ["CALLSIGN"].upper()}'
+url = f'https://sotl.as/api/activations/{get_callsign().upper()}'
 data = requests.get(url, timeout=30).json()
 
 # Center map
