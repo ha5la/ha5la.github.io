@@ -329,7 +329,7 @@ fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
 fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
 
 # HTML mentése
-fig.write_html(OUTPUT_FILE, config={'displayModeBar': True, 'displaylogo': False}, include_plotlyjs='cdn')
+fig.write_html(OUTPUT_FILE, config={'displayModeBar': True, 'displaylogo': False}, include_plotlyjs='cdn', div_id='geocaching')
 print(f"\n✅ Interaktív grafikon mentve: {OUTPUT_FILE}")
 
 # ========== STATISZTIKÁK ==========
