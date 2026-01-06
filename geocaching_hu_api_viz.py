@@ -289,14 +289,22 @@ if can_catch and catch_date < future_dates[-1]:
     fig.add_vline(x=catch_date, line_dash="dot", line_color="green", opacity=0.5)
 
 # Legutóbbi megtalálás dátuma
-#fig.add_vline(
-#    x=current_date,
-#    line_dash="dash",
-#    line_color="red",
-#    opacity=0.5,
-#    annotation_text=f"Legutóbbi: {current_date.strftime('%Y-%m-%d')}",
-#    annotation_position="top"
-#)
+fig.add_vline(
+    x=current_date,
+    line_dash="dash",
+    line_color="red",
+    opacity=0.5
+)
+
+fig.add_annotation(
+    x=current_date,
+    y=1,
+    yref="paper",
+    text=f"Legutóbbi: {current_date.strftime('%Y-%m-%d')}",
+    showarrow=False,
+    yshift=10,
+    font=dict(color="red")
+)
 
 # Layout beállítások
 fig.update_layout(
@@ -329,7 +337,10 @@ fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
 fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
 
 # HTML mentése
-fig.write_html(OUTPUT_FILE, config={'displayModeBar': True, 'displaylogo': False}, include_plotlyjs='cdn', div_id='geocaching')
+fig.write_html(OUTPUT_FILE,
+               config={'displayModeBar': True, 'displaylogo': False},
+               include_plotlyjs='cdn',
+               div_id='geocaching')
 print(f"\n✅ Interaktív grafikon mentve: {OUTPUT_FILE}")
 
 # ========== STATISZTIKÁK ==========
@@ -366,7 +377,7 @@ else:
     print(f"\n🤝 Pontosan ugyanannyi találatotok van!")
 
 if can_catch:
-    days_diff = (catch_date - current_date).days
+    days_diff = int((catch_date - current_date).days)
     months_diff = days_diff / 30
     print(f"\n🎯 KIVÁLÓ HÍR! A jelenlegi tempóval utol fogod érni!")
     print(f"   📅 Becsült dátum: {catch_date.strftime('%Y. %B %d.')}")
