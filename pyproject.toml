@@ -6,9 +6,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
   "folium",
-  "matplotlib",
   "mercantile",
   "pillow",
+  "plotly",
   "requests",
   "scipy",
 ]

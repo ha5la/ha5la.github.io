@@ -46,7 +46,7 @@ jobs:
         run: |
           uv run geocaching_hu_api_viz.py
           mkdir -p output
-          mv geocaching_stats.svg output/geocaching.svg
+          mv geocaching_stats.html output/geocaching.html
 
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

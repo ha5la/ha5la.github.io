@@ -1,24 +1,45 @@
 import requests
-import matplotlib.pyplot as plt
-import numpy as np
-import os
+import plotly.graph_objects as go
 from datetime import datetime, timedelta
 from scipy import stats
+import numpy as np
 from collections import defaultdict
+import os
+import sys
 
 # ========== BEÁLLÍTÁSOK ==========
-# Felhasználók ID-i (integer)
-USER_ID_1 = os.environ["GEOCACHING_HU_UID"]  # <-- Cseréld ki a saját ID-dre
-USER_ID_2 = os.environ["GEOCACHING_HU_NEMESIS_UID"]  # <-- Cseréld ki a cimbora ID-jére
+# Felhasználók ID-i környezeti változókból
+USER_ID_1 = os.environ.get('GEOCACHING_HU_UID')
+USER_ID_2 = os.environ.get('GEOCACHING_HU_NEMESIS_UID')
 
-USER_NAME_1 = "Me"
-USER_NAME_2 = "Nemesis"
+# Ellenőrzés, hogy be vannak-e állítva a környezeti változók
+if not USER_ID_1 or not USER_ID_2:
+    print("❌ HIBA: Hiányzó környezeti változók!")
+    print("\nKérlek állítsd be a következő környezeti változókat:")
+    print("  - GEOCACHING_HU_UID (saját geocaching.hu user ID)")
+    print("  - GEOCACHING_HU_NEMESIS_UID (vetélytárs geocaching.hu user ID)")
+    print("\nPéldák:")
+    print("  Linux/Mac: export GEOCACHING_HU_UID=12345")
+    print("  Windows:   set GEOCACHING_HU_UID=12345")
+    print("  GitHub Actions: secrets.GEOCACHING_HU_UID")
+    sys.exit(1)
+
+# Konvertálás integer-re
+try:
+    USER_ID_1 = int(USER_ID_1)
+    USER_ID_2 = int(USER_ID_2)
+except ValueError:
+    print("❌ HIBA: A környezeti változók értékének számnak kell lennie!")
+    sys.exit(1)
+
+USER_NAME_1 = "Jómagam"
+USER_NAME_2 = "Vetélytárs"
 
 # Trend számítás beállítása
 RECENT_DAYS = 90  # Hány nap adatait használja a trend becsléséhez (30, 60, 90, 180, stb.)
 
 # Kimenet beállítása
-OUTPUT_FILE = "geocaching_stats.svg"  # Kimeneti fájl neve (svg: kis méret, png: raszteres kép)
+OUTPUT_FILE = "geocaching_stats.html"  # Kimeneti fájl neve
 
 # API beállítások
 API_URL = "https://api.geocaching.hu/logsbyuser"
@@ -205,52 +226,111 @@ catch_date, can_catch = predict_catch_date(
     dates2, counts2, slope2, intercept2
 )
 
-# ========== GRAFIKON ==========
-# Matplotlib backend beállítása non-interactive módra
-import matplotlib
-matplotlib.use('Agg')  # Szükséges a háttérben történő mentéshez
+# ========== PLOTLY GRAFIKON ==========
+fig = go.Figure()
 
-plt.figure(figsize=(15, 9))
+# Tényleges adatok - Személy 1
+fig.add_trace(go.Scatter(
+    x=dates1,
+    y=counts1,
+    mode='lines+markers',
+    name=f'{USER_NAME_1} (tényleges)',
+    line=dict(color='#2E86AB', width=3),
+    marker=dict(size=8, symbol='circle'),
+    hovertemplate='<b>%{x|%Y-%m-%d}</b><br>Találatok: %{y}<br><extra></extra>'
+))
 
-# Tényleges adatok
-plt.plot(dates1, counts1, 'o-', label=f'{USER_NAME_1} (tényleges)',
-         linewidth=2.5, markersize=6, color='#2E86AB', alpha=0.8)
-plt.plot(dates2, counts2, 's-', label=f'{USER_NAME_2} (tényleges)',
-         linewidth=2.5, markersize=6, color='#A23B72', alpha=0.8)
+# Tényleges adatok - Személy 2
+fig.add_trace(go.Scatter(
+    x=dates2,
+    y=counts2,
+    mode='lines+markers',
+    name=f'{USER_NAME_2} (tényleges)',
+    line=dict(color='#A23B72', width=3),
+    marker=dict(size=8, symbol='square'),
+    hovertemplate='<b>%{x|%Y-%m-%d}</b><br>Találatok: %{y}<br><extra></extra>'
+))
 
-# Jövőbeli becslés
-plt.plot(future_dates, pred1, '--', label=f'{USER_NAME_1} (becslés)',
-         linewidth=2, alpha=0.6, color='#2E86AB')
-plt.plot(future_dates, pred2, '--', label=f'{USER_NAME_2} (becslés)',
-         linewidth=2, alpha=0.6, color='#A23B72')
+# Jövőbeli becslés - Személy 1
+fig.add_trace(go.Scatter(
+    x=future_dates,
+    y=pred1,
+    mode='lines',
+    name=f'{USER_NAME_1} (becslés)',
+    line=dict(color='#2E86AB', width=2, dash='dash'),
+    opacity=0.6,
+    hovertemplate='<b>%{x|%Y-%m-%d}</b><br>Becsült találatok: %{y:.0f}<br><extra></extra>'
+))
+
+# Jövőbeli becslés - Személy 2
+fig.add_trace(go.Scatter(
+    x=future_dates,
+    y=pred2,
+    mode='lines',
+    name=f'{USER_NAME_2} (becslés)',
+    line=dict(color='#A23B72', width=2, dash='dash'),
+    opacity=0.6,
+    hovertemplate='<b>%{x|%Y-%m-%d}</b><br>Becsült találatok: %{y:.0f}<br><extra></extra>'
+))
 
 # Utolérési pont
 if can_catch and catch_date < future_dates[-1]:
     catch_count = slope1 * (catch_date - dates1[0]).days + intercept1
-    plt.plot(catch_date, catch_count, 'g*', markersize=30,
-             label=f'🎯 Utolérés: {catch_date.strftime("%Y-%m-%d")}',
-             zorder=10, markeredgecolor='darkgreen', markeredgewidth=1.5)
-    plt.axvline(x=catch_date, color='green', linestyle=':', alpha=0.5, linewidth=2)
+    fig.add_trace(go.Scatter(
+        x=[catch_date],
+        y=[catch_count],
+        mode='markers',
+        name=f'🎯 Utolérés',
+        marker=dict(size=20, color='green', symbol='star', line=dict(color='darkgreen', width=2)),
+        hovertemplate=f'<b>Utolérés!</b><br>Dátum: {catch_date.strftime("%Y-%m-%d")}<br>Találatok: {catch_count:.0f}<br><extra></extra>'
+    ))
+
+    # Függőleges vonal az utolérési pontnál
+    fig.add_vline(x=catch_date, line_dash="dot", line_color="green", opacity=0.5)
 
 # Legutóbbi megtalálás dátuma
-plt.axvline(x=current_date, color='red', linestyle='--',
-            alpha=0.5, label=f'Legutóbbi megtalálás: {current_date.strftime("%Y-%m-%d")}', linewidth=2)
+#fig.add_vline(
+#    x=current_date,
+#    line_dash="dash",
+#    line_color="red",
+#    opacity=0.5,
+#    annotation_text=f"Legutóbbi: {current_date.strftime('%Y-%m-%d')}",
+#    annotation_position="top"
+#)
 
-plt.xlabel('Dátum', fontsize=14, fontweight='bold')
-plt.ylabel('Találatok száma', fontsize=14, fontweight='bold')
-plt.title('Geocaching találatok összehasonlítása (geocaching.hu)',
-          fontsize=16, fontweight='bold', pad=20)
-plt.legend(fontsize=12, loc='upper left', framealpha=0.9)
-plt.grid(True, alpha=0.3, linestyle='--')
-plt.xticks(rotation=45)
-plt.tight_layout()
+# Layout beállítások
+fig.update_layout(
+    title={
+        'text': 'Geocaching találatok összehasonlítása (geocaching.hu)',
+        'x': 0.5,
+        'xanchor': 'center',
+        'font': {'size': 20, 'family': 'Arial, sans-serif'}
+    },
+    xaxis_title='Dátum',
+    yaxis_title='Találatok száma',
+    hovermode='closest',
+    template='plotly_white',
+    legend=dict(
+        orientation="v",
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01,
+        bgcolor="rgba(255, 255, 255, 0.8)",
+        bordercolor="gray",
+        borderwidth=1
+    ),
+    height=700,
+    font=dict(size=12)
+)
 
-# Mentés fájlba (PNG vagy SVG)
-if OUTPUT_FILE.endswith('.svg'):
-    plt.savefig(OUTPUT_FILE, format='svg', bbox_inches='tight', facecolor='white')
-else:
-    plt.savefig(OUTPUT_FILE, dpi=150, bbox_inches='tight', facecolor='white')
-print(f"\n✅ Grafikon mentve: {OUTPUT_FILE}")
+# Rács beállítása
+fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+
+# HTML mentése
+fig.write_html(OUTPUT_FILE, config={'displayModeBar': True, 'displaylogo': False}, include_plotlyjs='cdn')
+print(f"\n✅ Interaktív grafikon mentve: {OUTPUT_FILE}")
 
 # ========== STATISZTIKÁK ==========
 print("\n" + "=" * 60)
@@ -312,6 +392,7 @@ else:
 print("=" * 60)
 
 print(f"\n✅ Sikeres futás!")
-print(f"📊 Grafikon: {OUTPUT_FILE}")
+print(f"📊 Interaktív grafikon: {OUTPUT_FILE}")
 print(f"📅 Referencia dátum: {current_date.strftime('%Y-%m-%d')} (legutóbbi megtalálás)")
+print(f"🖱️  Nyisd meg böngészőben és húzd az egeret az adatpontok fölé!")
 print(f"💡 TIP: Használd GitHub Actions-ben napi futáshoz!")
