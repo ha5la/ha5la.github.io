@@ -229,14 +229,17 @@ catch_date, can_catch = predict_catch_date(
 # ========== PLOTLY GRAFIKON ==========
 fig = go.Figure()
 
-# Közös időskála létrehozása (minden nap az első és utolsó találat között)
+# Közös időskála létrehozása (hetente 1 pont az interpolációhoz)
 start_date = min(dates1[0], dates2[0])
 end_date = max(dates1[-1], dates2[-1])
 all_dates = []
 current = start_date
 while current <= end_date:
     all_dates.append(current)
-    current += timedelta(days=1)
+    current += timedelta(days=7)  # Hetente 1 pont a fájlméret csökkentéséhez
+# Az utolsó nap mindenképp legyen benne
+if all_dates[-1] != end_date:
+    all_dates.append(end_date)
 
 # Interpolált értékek számítása mindkét felhasználóhoz
 def interpolate_values(dates, counts, all_dates):
@@ -256,8 +259,6 @@ interp_counts1 = interpolate_values(dates1, counts1, all_dates)
 interp_counts2 = interpolate_values(dates2, counts2, all_dates)
 
 # Különbségek számítása
-diff_values = []
-diff_percent = []
 diff_text = []
 
 for i in range(len(all_dates)):
@@ -265,13 +266,11 @@ for i in range(len(all_dates)):
     val2 = interp_counts2[i]
     
     diff = val2 - val1
-    diff_values.append(diff)
     
     if val2 > 0:
         pct = (diff / val2) * 100
     else:
         pct = 0
-    diff_percent.append(pct)
     
     if diff > 0:
         diff_text.append(f'Lemaradás: {diff} ({pct:.1f}%)')
@@ -280,17 +279,17 @@ for i in range(len(all_dates)):
     else:
         diff_text.append('Holtverseny')
 
-# Láthatatlan trace a különbség megjelenítésére (y=0 helyett a grafikonon kívülre tesszük)
+# Láthatatlan trace a különbség megjelenítésére
 fig.add_trace(go.Scatter(
     x=all_dates,
-    y=[0] * len(all_dates),  # 0-ra tesszük, hogy láthatatlan legyen
+    y=[0] * len(all_dates),
     mode='lines',
     name='Különbség',
     line=dict(width=0),
     hovertemplate='<b>%{text}</b><extra></extra>',
     text=diff_text,
     showlegend=False,
-    yaxis='y2'  # Második y tengelyre tesszük
+    yaxis='y2'
 ))
 
 # Interpolált adatok - Személy 1 (láthatatlan, csak hoverhez)
@@ -323,7 +322,7 @@ fig.add_trace(go.Scatter(
     name=f'{USER_NAME_1}',
     line=dict(color='#2E86AB', width=3),
     marker=dict(size=8, symbol='circle'),
-    hoverinfo='skip'  # Ne jelenjen meg dupla tooltip
+    hoverinfo='skip'
 ))
 
 # Látható adatok - Személy 2 (csak a tényleges pontok)
@@ -334,7 +333,7 @@ fig.add_trace(go.Scatter(
     name=f'{USER_NAME_2}',
     line=dict(color='#A23B72', width=3),
     marker=dict(size=8, symbol='square'),
-    hoverinfo='skip'  # Ne jelenjen meg dupla tooltip
+    hoverinfo='skip'
 ))
 
 # Jövőbeli becslés - Személy 1
