@@ -13,6 +13,8 @@ permissions:
 
 env:
   CALLSIGN: ${{ vars.CALLSIGN }}
+  GEOCACHING_HU_UID: ${{ vars.GEOCACHING_HU_UID }}
+  GEOCACHING_HU_NEMESIS_UID: ${{ vars.GEOCACHING_HU_NEMESIS_UID }}
 
 jobs:
   build:
@@ -44,7 +46,7 @@ jobs:
         run: |
           uv run geocaching_hu_api_viz.py
           mkdir -p output
-          ./postprocess-png.sh geocaching_stats.png output/geocaching.png
+          mv geocaching_stats.svg output/geocaching.svg
 
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

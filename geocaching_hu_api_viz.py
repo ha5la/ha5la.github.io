@@ -1,23 +1,24 @@
 import requests
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 from datetime import datetime, timedelta
 from scipy import stats
 from collections import defaultdict
 
 # ========== BEÁLLÍTÁSOK ==========
 # Felhasználók ID-i (integer)
-USER_ID_1 = 25585  # <-- Cseréld ki a saját ID-dre
-USER_ID_2 = 17917  # <-- Cseréld ki a cimbora ID-jére
+USER_ID_1 = os.environ["GEOCACHING_HU_UID"]  # <-- Cseréld ki a saját ID-dre
+USER_ID_2 = os.environ["GEOCACHING_HU_NEMESIS_UID"]  # <-- Cseréld ki a cimbora ID-jére
 
-USER_NAME_1 = "Geolaci"
-USER_NAME_2 = "Snipermaster"
+USER_NAME_1 = "Me"
+USER_NAME_2 = "Nemesis"
 
 # Trend számítás beállítása
 RECENT_DAYS = 90  # Hány nap adatait használja a trend becsléséhez (30, 60, 90, 180, stb.)
 
 # Kimenet beállítása
-OUTPUT_FILE = "geocaching_stats.png"  # Kimeneti fájl neve
+OUTPUT_FILE = "geocaching_stats.svg"  # Kimeneti fájl neve (svg: kis méret, png: raszteres kép)
 
 # API beállítások
 API_URL = "https://api.geocaching.hu/logsbyuser"
@@ -244,8 +245,11 @@ plt.grid(True, alpha=0.3, linestyle='--')
 plt.xticks(rotation=45)
 plt.tight_layout()
 
-# Mentés PNG fájlba
-plt.savefig(OUTPUT_FILE, dpi=150, bbox_inches='tight', facecolor='white')
+# Mentés fájlba (PNG vagy SVG)
+if OUTPUT_FILE.endswith('.svg'):
+    plt.savefig(OUTPUT_FILE, format='svg', bbox_inches='tight', facecolor='white')
+else:
+    plt.savefig(OUTPUT_FILE, dpi=150, bbox_inches='tight', facecolor='white')
 print(f"\n✅ Grafikon mentve: {OUTPUT_FILE}")
 
 # ========== STATISZTIKÁK ==========
