@@ -18,25 +18,25 @@
   <text x="205" y="28"
         font-family="Arial, Helvetica, sans-serif"
         font-size="14" fill="#cbd5f5">
-    QSOs: 285
+    QSOs: 309
   </text>
 
   <text x="295" y="28"
         font-family="Arial, Helvetica, sans-serif"
         font-size="14" fill="#c7d2fe">
-    Score: 1937
+    Score: 2123
   </text>
 
   <text x="390" y="28"
         font-family="Arial, Helvetica, sans-serif"
         font-size="14" fill="#a5b4fc">
-    Rank: 45
+    Rank: 38
   </text>
 
   <title>
     WWA 2026 January — HA5LA
-    | QSOs: 285
-    | Score: 1937
-    | Rank: 45
+    | QSOs: 309
+    | Score: 2123
+    | Rank: 38
   </title>
 </svg>
