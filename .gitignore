@@ -2,3 +2,5 @@
 *.png
 *.svg
 tile_cache/
+*.gpx
+__pycache__/
