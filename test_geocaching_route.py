@@ -52,5 +52,20 @@ class PlanTest(unittest.TestCase):
         self.assertEqual(rt, [])
 
 
+class PrerequisiteTest(unittest.TestCase):
+    final = {'waypoint': 'GCEez', 'nickname': 'Erdészek emlékére záróláda'}
+    desc = 'meg kell találnod a lenti listában felsorolt ládákat: GCEe1, GCEe2 és GCPERU. (GCEez)'
+
+    def test_should_list_unfound_prerequisites_of_a_final_cache(self):
+        self.assertEqual(gr.missing_prerequisites(self.final, self.desc, {'GCEe1'}), {'GCEe2', 'GCPERU'})
+
+    def test_should_accept_final_cache_when_all_prerequisites_are_found(self):
+        self.assertEqual(gr.missing_prerequisites(self.final, self.desc, {'GCEe1', 'GCEe2', 'GCPERU'}), set())
+
+    def test_should_ignore_codes_mentioned_by_ordinary_caches(self):
+        cache = {'waypoint': 'GCVT', 'nickname': 'Verőcei támfal'}
+        self.assertEqual(gr.missing_prerequisites(cache, 'lásd még: GCABC', set()), set())
+
+
 if __name__ == '__main__':
     unittest.main()

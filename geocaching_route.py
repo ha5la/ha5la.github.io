@@ -68,6 +68,26 @@ def fetch_unfound(uid):
                                                             found='false', fields=fields), timeout=60).json()
 
 
+def missing_prerequisites(c, fulldesc, found):
+    """Egy záróláda leírásában felsorolt, még meg nem talált előfeltétel-ládák."""
+    if not re.search('zárólád', c['nickname'], re.I):
+        return set()
+    return set(re.findall(r'\bGC[A-Za-z0-9]{2,6}\b', fulldesc)) - found - {c['waypoint']}
+
+
+def drop_locked_finals(unfound, uid):
+    """Kiszűri a záróládákat, amelyeknek az előfeltételeit még nem teljesítetted."""
+    finals = [c for c in unfound if re.search('zárólád', c['nickname'], re.I)]
+    if not finals:
+        return unfound
+    found = {l['waypoint'] for l in requests.get(f'{API}/logsbyuser', params={'userid': uid, 'logtype': 1, 'fields': 'waypoint'},
+                                                 timeout=60).json()}
+    descs = {d['id']: d['fulldesc'] for d in requests.get(f'{API}/cachesbyid', params={
+        'id_list': ','.join(c['id'] for c in finals), 'fields': 'id,fulldesc'}, timeout=60).json()}
+    locked = {c['id'] for c in finals if missing_prerequisites(c, descs[c['id']], found)}
+    return [c for c in unfound if c['id'] not in locked]
+
+
 def haversine_times(lat, lon):
     la, lo = np.radians(lat), np.radians(lon)
     a = (np.sin((la[None] - la[:, None]) / 2) ** 2
@@ -262,7 +282,7 @@ def main():
                                      and field + back <= minutes(sunrise, return_by))
 
     unfound = fetch_unfound(args.uid)
-    cands = [dict(c, service=s) for c in unfound if (s := service_min(c)) is not None]
+    cands = [dict(c, service=s) for c in drop_locked_finals(unfound, args.uid) if (s := service_min(c)) is not None]
     print(f'{len(unfound)} meg nem talált láda, ebből {len(cands)} jelölt; napkelte {sunrise:%H:%M}, napnyugta {sunset:%H:%M}')
 
     results = []
