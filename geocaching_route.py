@@ -212,17 +212,22 @@ def road_point(cache, ways, caches):
     return best and best[1]
 
 
+def request_json(method, url, **kwargs):
+    """A nyilvános OSRM és Overpass szerverek gyakran túlterheltek: újrapróbál."""
+    for wait in (10, 30, 60, 120, None):
+        r = requests.request(method, url, headers={'User-Agent': 'geocaching_route.py'}, timeout=180, **kwargs)
+        if r.ok:
+            return r.json()
+        if wait is None:
+            r.raise_for_status()
+        print(f'{url.split("/")[2]}: HTTP {r.status_code}, újrapróbálás {wait} mp múlva')
+        time.sleep(wait)
+
+
 def overpass_ways(positions, radius=500):
     query = '[out:json][timeout:120];(' + ''.join(f'way(around:{radius},{la},{lo})[highway];' for la, lo in positions)
     query += ');out tags geom;'
-    for wait in (10, 30, 60, 120, None):
-        r = requests.post(OVERPASS, data={'data': query}, headers={'User-Agent': 'geocaching_route.py'}, timeout=180)
-        if r.ok:
-            return r.json()['elements']
-        if wait is None:
-            r.raise_for_status()
-        print(f'Overpass: HTTP {r.status_code}, újrapróbálás {wait} mp múlva')
-        time.sleep(wait)
+    return request_json('POST', OVERPASS, data={'data': query})['elements']
 
 
 def route_points(route, caches):
