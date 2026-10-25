@@ -105,7 +105,7 @@ def drive_min(osrm_seconds):
 
 def osrm_times(points):
     coords = ';'.join(f'{lon},{lat}' for lat, lon in points)
-    js = requests.get(f'{OSRM}/table/v1/driving/{coords}?annotations=duration,distance', timeout=120).json()
+    js = request_json('GET', f'{OSRM}/table/v1/driving/{coords}?annotations=duration,distance')
     t = drive_min(np.array(js['durations']))
     np.fill_diagonal(t, 0)
     return t, np.array(js['distances']) / 1000
