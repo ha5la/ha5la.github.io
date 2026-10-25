@@ -20,6 +20,7 @@ OVERPASS = 'https://overpass-api.de/api/interpreter'
 HUNGARY = dict(lat1=45.7, lat2=48.6, lon1=16.1, lon2=22.9)
 PARKABLE = {'residential', 'unclassified', 'tertiary', 'secondary', 'living_street', 'service'}
 MIN_DIST = 50  # m, ennyire legyen a túra pontja minden ládától, hogy ne takarja az appban
+SERVICE_SCALE = 0.65  # testdata/velence-2026-10-24.json alapján
 TYPES = {'1': 'Hagyományos', '2': 'Multi', '3': 'Virtuális', '4': 'Esemény típusú (állandó)'}
 
 
@@ -55,11 +56,11 @@ def service_min(c):
         length = length if length is not None else 1500 * n
         if n > 4 or length > 4000 or d > 2.5:
             return None
-        return 10 + 12 * n + 2 * length / 70
+        return SERVICE_SCALE * (10 + 12 * n + 2 * length / 70)
     length = length if length is not None else 300
     if length > 2500 or d > 3 or terrain > 3.5 or re.search(r'\d', c['needs_maintenance']):
         return None
-    return 6 + 2 * length / 70 + 4 * (d - 1) + 3 * max(0, terrain - 2) + (2 if t == '3' else 0)
+    return SERVICE_SCALE * (6 + 2 * length / 70 + 4 * (d - 1) + 3 * max(0, terrain - 2) + (2 if t == '3' else 0))
 
 
 def fetch_unfound(uid):
@@ -99,7 +100,7 @@ def haversine_times(lat, lon):
 
 
 def drive_min(osrm_seconds):
-    return osrm_seconds / 60 * 1.15 + 3
+    return osrm_seconds / 60
 
 
 def osrm_times(points):

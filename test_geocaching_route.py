@@ -1,3 +1,4 @@
+import json
 import unittest
 from datetime import date
 
@@ -65,6 +66,15 @@ class PrerequisiteTest(unittest.TestCase):
     def test_should_ignore_codes_mentioned_by_ordinary_caches(self):
         cache = {'waypoint': 'GCVT', 'nickname': 'Verőcei támfal'}
         self.assertEqual(gr.missing_prerequisites(cache, 'lásd még: GCABC', set()), set())
+
+
+class CalibrationTest(unittest.TestCase):
+    def test_should_estimate_a_real_day_slightly_conservatively(self):
+        legs = json.load(open('testdata/velence-2026-10-24.json'))
+        actual = sum(l['actual'] for l in legs)
+        predicted = sum(gr.drive_min(l['osrm_seconds']) + gr.service_min(l['cache']) for l in legs)
+        self.assertGreaterEqual(predicted, actual)
+        self.assertLessEqual(predicted, actual * 1.15)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,288 @@
+[
+ {
+  "cache": {
+   "waypoint": "GCMBRK",
+   "type": "1",
+   "difficulty_rating": "2.0",
+   "terrain_rating": "3.0",
+   "multi": "0",
+   "length": "350",
+   "needs_maintenance": ""
+  },
+  "actual": 35.0,
+  "osrm_seconds": 673
+ },
+ {
+  "cache": {
+   "waypoint": "GCMKD",
+   "type": "1",
+   "difficulty_rating": "2.0",
+   "terrain_rating": "2.0",
+   "multi": "0",
+   "length": "500",
+   "needs_maintenance": ""
+  },
+  "actual": 19.0,
+  "osrm_seconds": 428
+ },
+ {
+  "cache": {
+   "waypoint": "GCAORT",
+   "type": "1",
+   "difficulty_rating": "1.5",
+   "terrain_rating": "1.0",
+   "multi": "0",
+   "length": "30",
+   "needs_maintenance": ""
+  },
+  "actual": 21.0,
+  "osrm_seconds": 1043
+ },
+ {
+  "cache": {
+   "waypoint": "GCCSAK",
+   "type": "1",
+   "difficulty_rating": "2.0",
+   "terrain_rating": "1.5",
+   "multi": "0",
+   "length": "250",
+   "needs_maintenance": ""
+  },
+  "actual": 24.0,
+  "osrm_seconds": 929
+ },
+ {
+  "cache": {
+   "waypoint": "GCCSPU",
+   "type": "1",
+   "difficulty_rating": "2.5",
+   "terrain_rating": "2.5",
+   "multi": "0",
+   "length": "48",
+   "needs_maintenance": ""
+  },
+  "actual": 13.0,
+  "osrm_seconds": 297
+ },
+ {
+  "cache": {
+   "waypoint": "GCZAMT",
+   "type": "1",
+   "difficulty_rating": "1.5",
+   "terrain_rating": "1.5",
+   "multi": "0",
+   "length": "80",
+   "needs_maintenance": ""
+  },
+  "actual": 16.0,
+  "osrm_seconds": 438
+ },
+ {
+  "cache": {
+   "waypoint": "GCGant",
+   "type": "3",
+   "difficulty_rating": "1.0",
+   "terrain_rating": "1.0",
+   "multi": "0",
+   "length": "15",
+   "needs_maintenance": ""
+  },
+  "actual": 11.0,
+  "osrm_seconds": 157
+ },
+ {
+  "cache": {
+   "waypoint": "GCBOD",
+   "type": "1",
+   "difficulty_rating": "2.0",
+   "terrain_rating": "3.0",
+   "multi": "0",
+   "length": "300",
+   "needs_maintenance": ""
+  },
+  "actual": 41.0,
+  "osrm_seconds": 1200
+ },
+ {
+  "cache": {
+   "waypoint": "GCIFRA",
+   "type": "3",
+   "difficulty_rating": "1.0",
+   "terrain_rating": "1.0",
+   "multi": "0",
+   "length": "500",
+   "needs_maintenance": ""
+  },
+  "actual": 46.0,
+  "osrm_seconds": 1930
+ },
+ {
+  "cache": {
+   "waypoint": "GCMO07",
+   "type": "4",
+   "difficulty_rating": "1.0",
+   "terrain_rating": "1.5",
+   "multi": "0",
+   "length": "350",
+   "needs_maintenance": ""
+  },
+  "actual": 5.0,
+  "osrm_seconds": 120
+ },
+ {
+  "cache": {
+   "waypoint": "GCKULA",
+   "type": "1",
+   "difficulty_rating": "1.5",
+   "terrain_rating": "1.5",
+   "multi": "0",
+   "length": "50",
+   "needs_maintenance": ""
+  },
+  "actual": 16.0,
+  "osrm_seconds": 52
+ },
+ {
+  "cache": {
+   "waypoint": "GCBKSZ",
+   "type": "1",
+   "difficulty_rating": "2.5",
+   "terrain_rating": "2.5",
+   "multi": "0",
+   "length": "1860",
+   "needs_maintenance": ""
+  },
+  "actual": 18.0,
+  "osrm_seconds": 1784
+ },
+ {
+  "cache": {
+   "waypoint": "GCTAC",
+   "type": "1",
+   "difficulty_rating": "1.5",
+   "terrain_rating": "1.0",
+   "multi": "0",
+   "length": "30",
+   "needs_maintenance": ""
+  },
+  "actual": 37.0,
+  "osrm_seconds": 1962
+ },
+ {
+  "cache": {
+   "waypoint": "GCszaz",
+   "type": "1",
+   "difficulty_rating": "2.5",
+   "terrain_rating": "1.0",
+   "multi": "0",
+   "length": "10",
+   "needs_maintenance": ""
+  },
+  "actual": 9.0,
+  "osrm_seconds": 162
+ },
+ {
+  "cache": {
+   "waypoint": "GCproh",
+   "type": "1",
+   "difficulty_rating": "1.0",
+   "terrain_rating": "1.0",
+   "multi": "0",
+   "length": "",
+   "needs_maintenance": ""
+  },
+  "actual": 17.0,
+  "osrm_seconds": 125
+ },
+ {
+  "cache": {
+   "waypoint": "GCRACB",
+   "type": "3",
+   "difficulty_rating": "2.0",
+   "terrain_rating": "2.0",
+   "multi": "0",
+   "length": "360",
+   "needs_maintenance": ""
+  },
+  "actual": 29.0,
+  "osrm_seconds": 360
+ },
+ {
+  "cache": {
+   "waypoint": "GCALU",
+   "type": "1",
+   "difficulty_rating": "1.5",
+   "terrain_rating": "1.5",
+   "multi": "0",
+   "length": "30",
+   "needs_maintenance": ""
+  },
+  "actual": 12.0,
+  "osrm_seconds": 125
+ },
+ {
+  "cache": {
+   "waypoint": "GCCSAL",
+   "type": "1",
+   "difficulty_rating": "1.0",
+   "terrain_rating": "1.0",
+   "multi": "0",
+   "length": "",
+   "needs_maintenance": ""
+  },
+  "actual": 19.0,
+  "osrm_seconds": 647
+ },
+ {
+  "cache": {
+   "waypoint": "GCBELL",
+   "type": "1",
+   "difficulty_rating": "1.5",
+   "terrain_rating": "1.5",
+   "multi": "0",
+   "length": "",
+   "needs_maintenance": ""
+  },
+  "actual": 35.0,
+  "osrm_seconds": 1216
+ },
+ {
+  "cache": {
+   "waypoint": "GCMH",
+   "type": "1",
+   "difficulty_rating": "2.5",
+   "terrain_rating": "2.0",
+   "multi": "0",
+   "length": "400",
+   "needs_maintenance": ""
+  },
+  "actual": 21.0,
+  "osrm_seconds": 605
+ },
+ {
+  "cache": {
+   "waypoint": "GCSuko",
+   "type": "1",
+   "difficulty_rating": "2.0",
+   "terrain_rating": "2.5",
+   "multi": "0",
+   "length": "500",
+   "needs_maintenance": ""
+  },
+  "actual": 19.0,
+  "osrm_seconds": 527
+ },
+ {
+  "cache": {
+   "waypoint": "GCSzOs",
+   "type": "1",
+   "difficulty_rating": "2.0",
+   "terrain_rating": "2.0",
+   "multi": "0",
+   "length": "175",
+   "needs_maintenance": ""
+  },
+  "actual": 23.0,
+  "osrm_seconds": 631
+ }
+]
