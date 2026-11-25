@@ -92,6 +92,15 @@ class RollingMeanTest(unittest.TestCase):
         self.assertEqual(hd.rolling_mean(values, 7), [100, 150, 400])
 
 
+class ExportDayTest(unittest.TestCase):
+    def test_should_use_budapest_date_of_drive_modified_time(self):
+        self.assertEqual(hd.export_day('2026-11-24T23:30:00.000Z'), date(2026, 11, 25))
+
+    def test_should_drop_export_day_and_later(self):
+        values = {date(2026, 11, 23): 1, date(2026, 11, 24): 2, date(2026, 11, 25): 3}
+        self.assertEqual(hd.complete_days(values, date(2026, 11, 24)), {date(2026, 11, 23): 1})
+
+
 def make_db_at(path):
     db = sqlite3.connect(path)
     db.executescript(SCHEMA)

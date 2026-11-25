@@ -2,8 +2,9 @@ import json
 import os
 import sqlite3
 import zipfile
-from datetime import date
+from datetime import date, datetime
 from io import BytesIO
+from zoneinfo import ZoneInfo
 
 import plotly.graph_objects as go
 from google.auth.transport.requests import AuthorizedSession
@@ -58,18 +59,26 @@ def rolling_mean(values, days):
     return result
 
 
+def export_day(modified_time):
+    return datetime.fromisoformat(modified_time).astimezone(ZoneInfo('Europe/Budapest')).date()
+
+
+def complete_days(values, export_day):
+    return {d: v for d, v in values.items() if d < export_day}
+
+
 def download_latest_export(folder_id, key_json):
     creds = service_account.Credentials.from_service_account_info(
         json.loads(key_json), scopes=['https://www.googleapis.com/auth/drive.readonly'])
     session = AuthorizedSession(creds)
     resp = session.get(DRIVE_FILES, timeout=30, params={
         'q': f"'{folder_id}' in parents and trashed = false and name contains '.zip'",
-        'orderBy': 'modifiedTime desc', 'pageSize': 1, 'fields': 'files(id)'})
+        'orderBy': 'modifiedTime desc', 'pageSize': 1, 'fields': 'files(id,modifiedTime)'})
     resp.raise_for_status()
     (latest,) = resp.json()['files']
     resp = session.get(f"{DRIVE_FILES}/{latest['id']}", params={'alt': 'media'}, timeout=120)
     resp.raise_for_status()
-    return resp.content
+    return resp.content, export_day(latest['modifiedTime'])
 
 
 def figure(title, *traces, y2=None):
@@ -101,12 +110,12 @@ def kpi(label, value, color):
     return f'<div class="kpi" style="--c:{color}"><div class="v">{value}</div><div class="l">{label}</div></div>'
 
 
-def render(db):
-    pushups = daily_pushups(db)
-    steps = daily_activity(db, 'steps_record_table', 'count')
-    distance = daily_activity(db, 'distance_record_table', 'distance')
-    active = daily_activity(db, 'active_calories_burned_record_table', 'energy')
-    total = daily_activity(db, 'total_calories_burned_record_table', 'energy')
+def render(db, exported):
+    pushups = complete_days(daily_pushups(db), exported)
+    steps = complete_days(daily_activity(db, 'steps_record_table', 'count'), exported)
+    distance = complete_days(daily_activity(db, 'distance_record_table', 'distance'), exported)
+    active = complete_days(daily_activity(db, 'active_calories_burned_record_table', 'energy'), exported)
+    total = complete_days(daily_activity(db, 'total_calories_burned_record_table', 'energy'), exported)
 
     cumulative, running = {}, 0
     for d in sorted(pushups):
@@ -169,6 +178,6 @@ h1 {{ font-family: Orbitron, sans-serif; font-weight: 800; letter-spacing: .25em
 
 
 if __name__ == '__main__':
-    zip_bytes = download_latest_export(os.environ['HC_EXPORT_FOLDER_ID'], os.environ['GDRIVE_SA_KEY'])
+    zip_bytes, exported = download_latest_export(os.environ['HC_EXPORT_FOLDER_ID'], os.environ['GDRIVE_SA_KEY'])
     with open(OUTPUT_FILE, 'w') as f:
-        f.write(render(open_export(zip_bytes)))
+        f.write(render(open_export(zip_bytes), exported))
