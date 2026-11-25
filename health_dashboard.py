@@ -1,4 +1,7 @@
+import sqlite3
+import zipfile
 from datetime import date
+from io import BytesIO
 
 EPOCH = date(1970, 1, 1).toordinal()
 PUSHUP_SEGMENT = 64
@@ -27,3 +30,11 @@ def daily_activity(db, table, column):
         if app in priority and (local_date not in best or priority[app] < best[local_date][0]):
             best[local_date] = (priority[app], total)
     return {to_date(d): total for d, (_, total) in best.items()}
+
+
+def open_export(zip_bytes):
+    with zipfile.ZipFile(BytesIO(zip_bytes)) as z:
+        db_bytes = z.read('health_connect_export.db')
+    db = sqlite3.connect(':memory:')
+    db.deserialize(db_bytes)
+    return db

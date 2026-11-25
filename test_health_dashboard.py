@@ -1,5 +1,8 @@
+import io
 import sqlite3
+import tempfile
 import unittest
+import zipfile
 from datetime import date
 
 import health_dashboard as hd
@@ -9,15 +12,16 @@ SQUAT = 60
 DAY = date(2026, 11, 24).toordinal() - date(1970, 1, 1).toordinal()
 
 
-def make_db():
-    db = sqlite3.connect(':memory:')
-    db.executescript('''
+SCHEMA = '''
         CREATE TABLE exercise_session_record_table (row_id INTEGER PRIMARY KEY, app_info_id INTEGER, local_date INTEGER);
         CREATE TABLE exercise_segments_table (parent_key INTEGER, segment_type INTEGER, repetitions_count INTEGER);
         CREATE TABLE health_data_category_priority_table (health_data_category INTEGER, app_id_priority_order TEXT);
         CREATE TABLE steps_record_table (app_info_id INTEGER, local_date INTEGER, count INTEGER);
-    ''')
-    return db
+'''
+
+
+def make_db():
+    return make_db_at(':memory:')
 
 
 def add_session(db, local_date, *segments):
@@ -65,6 +69,26 @@ class DailyActivityTest(unittest.TestCase):
         add_steps(self.db, PHONE, DAY, 1000)
         add_steps(self.db, 9, DAY + 1, 300)
         self.assertEqual(hd.daily_activity(self.db, 'steps_record_table', 'count'), {date(2026, 11, 24): 1000})
+
+
+class OpenExportTest(unittest.TestCase):
+    def test_should_open_database_inside_export_zip(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = f'{tmp}/health_connect_export.db'
+            db = make_db_at(db_path)
+            add_session(db, DAY, (PUSHUP, 42))
+            db.commit()
+            db.close()
+            buf = io.BytesIO()
+            with zipfile.ZipFile(buf, 'w') as z:
+                z.write(db_path, 'health_connect_export.db')
+        self.assertEqual(hd.daily_pushups(hd.open_export(buf.getvalue())), {date(2026, 11, 24): 42})
+
+
+def make_db_at(path):
+    db = sqlite3.connect(path)
+    db.executescript(SCHEMA)
+    return db
 
 
 if __name__ == '__main__':
