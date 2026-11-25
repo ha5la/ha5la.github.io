@@ -47,6 +47,15 @@ jobs:
           mkdir -p output
           mv geocaching_stats.html output/geocaching.html
 
+      - name: Generate health report
+        env:
+          HC_EXPORT_FOLDER_ID: ${{ vars.HC_EXPORT_FOLDER_ID }}
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+        run: |
+          uv run health_dashboard.py
+          mkdir -p output
+          mv health.html output/health.html
+
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:

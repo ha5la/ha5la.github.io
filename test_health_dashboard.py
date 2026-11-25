@@ -85,6 +85,13 @@ class OpenExportTest(unittest.TestCase):
         self.assertEqual(hd.daily_pushups(hd.open_export(buf.getvalue())), {date(2026, 11, 24): 42})
 
 
+class RollingMeanTest(unittest.TestCase):
+    def test_should_average_last_seven_calendar_days_skipping_missing_ones(self):
+        d = date(2026, 11, 1)
+        values = {d: 100, date(2026, 11, 3): 200, date(2026, 11, 8): 600}
+        self.assertEqual(hd.rolling_mean(values, 7), [100, 150, 400])
+
+
 def make_db_at(path):
     db = sqlite3.connect(path)
     db.executescript(SCHEMA)
