@@ -33,7 +33,6 @@ jobs:
         run: |
           uv run main.py
           mkdir -p output
-          mv sota.html output/
           ./postprocess-png.sh sota.png output/sota.png
 
       - name: Generate WWA report

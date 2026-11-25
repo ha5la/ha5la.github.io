@@ -1,5 +1,3 @@
-import folium
-import itertools
 import math
 import mercantile
 import os
@@ -7,10 +5,8 @@ import requests
 import time
 from PIL import Image, ImageDraw
 from PIL.PngImagePlugin import PngInfo
-from branca.element import Element
 from io import BytesIO
 from pathlib import Path
-from unittest.mock import patch
 
 def get_callsign():
     callsign = os.getenv("CALLSIGN")
@@ -20,33 +16,6 @@ def fetch_sota_activations():
     print("fetching sota activations")
     url = f'https://sotl.as/api/activations/{get_callsign().upper()}'
     return requests.get(url, timeout=30).json()
-
-def output_to_html(data, output_filename):
-    # Center map
-    lats = [a["summit"]["coordinates"]["latitude"] for a in data]
-    lons = [a["summit"]["coordinates"]["longitude"] for a in data]
-    center = (sum(lats)/len(lats), sum(lons)/len(lons))
-
-    ids = map(lambda i: str(i), itertools.count())
-
-    with patch.object(Element, '_generate_id', side_effect=ids):
-        # Create map
-        m = folium.Map(
-            location=center,
-            zoom_start=8,
-            tiles="OpenStreetMap",
-            control_scale=True,
-            prefer_canvas=True
-        )
-
-        for a in data:
-            folium.Marker(
-                location=(a["summit"]["coordinates"]["latitude"], a["summit"]["coordinates"]["longitude"]),
-                popup=f'{a["summit"]["code"]} {a["summit"]["name"]} ({a["date"][0:10]})'
-            ).add_to(m)
-
-        m.save(output_filename)
-
 
 def get_tile(z, x, y, session):
     path = Path("tile_cache") / str(z) / str(x) / f"{y}.png"
@@ -201,7 +170,6 @@ def output_to_png(data, output_filename):
 
 def main():
     data = fetch_sota_activations()
-    output_to_html(data, "sota.html")
     output_to_png(data, "sota.png")
 
 
