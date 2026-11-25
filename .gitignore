@@ -1,6 +1,6 @@
 *.html
 *.png
+!tile_cache/**/*.png
 *.svg
-tile_cache/
 *.gpx
 __pycache__/
